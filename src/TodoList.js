@@ -63,7 +63,7 @@ function TodoList() {
           {/* Текст задачи */}
           {task.text}
 
-          {/* Кнопка "крестик" для удаления задачи */}
+          {/* Кнопка для удаления задачи */}
           <button onClick={() => deleteTask(index)} className="glow-on-hover">Удалить</button>
 
           {/* Кнопки перемещения пунктов */}
