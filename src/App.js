@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 
-function TodoList() {
+function App() {
   const [tasks, setTasks] = useState([]);
   const [newTaskText, setNewTaskText] = useState("");
 
@@ -144,4 +144,4 @@ function TodoList() {
   );
 }
 
-export default TodoList;
+export default App;
