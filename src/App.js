@@ -1,46 +1,16 @@
 import React, { useState } from "react";
 import "./App.css";
+import {
+  addTask,
+  deleteTask,
+  toggleCompleted,
+  deleteCompleted,
+  moveTask,
+} from "./functions";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTaskText, setNewTaskText] = useState("");
-
-  // Функция для добавления нового пункта в список
-  const addTask = () => {
-    if (newTaskText.trim() !== "") {
-      setTasks([...tasks, { text: newTaskText, completed: false }]);
-      setNewTaskText("");
-    }
-  };
-
-  // Функция для удаления задачи по индексу
-  const deleteTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
-  };
-
-  // Функция для обновления состояния выполненности задачи по индексу
-  const toggleCompleted = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
-    setTasks(updatedTasks);
-  };
-
-  // Функция для удаления выполненных задач
-  const deleteCompleted = () => {
-    const updatedTasks = tasks.filter((task) => !task.completed);
-    setTasks(updatedTasks);
-  };
-
-  // Функция для перемещения пунктов в списке
-  const moveTask = (currentIndex, newIndex) => {
-    const updatedTasks = [...tasks];
-    const taskToMove = updatedTasks[currentIndex];
-    updatedTasks.splice(currentIndex, 1);
-    updatedTasks.splice(newIndex, 0, taskToMove);
-    setTasks(updatedTasks);
-  };
 
   return (
     <div>
@@ -50,7 +20,10 @@ function App() {
         value={newTaskText}
         onChange={(e) => setNewTaskText(e.target.value)}
       />
-      <button onClick={addTask} className="glow-on-hover">
+      <button
+        onClick={() => addTask(newTaskText, tasks, setTasks, setNewTaskText)}
+        className="glow-on-hover"
+      >
         Добавить новый пункт
       </button>
 
@@ -73,7 +46,7 @@ function App() {
                 <input
                   type="checkbox"
                   checked={task.completed}
-                  onChange={() => toggleCompleted(index)}
+                  onChange={() => toggleCompleted(index, tasks, setTasks)}
                 />
               </td>
 
@@ -81,7 +54,7 @@ function App() {
 
               <td>
                 <button
-                  onClick={() => deleteTask(index)}
+                  onClick={() => deleteTask(index, tasks, setTasks)}
                   className="glow-on-hover"
                 >
                   Удалить
@@ -92,7 +65,7 @@ function App() {
                 <td>
                   {index < tasks.length - 1 && (
                     <button
-                      onClick={() => moveTask(index, index + 1)}
+                      onClick={() => moveTask(index, index + 1, tasks, setTasks)}
                       className="glow-on-hover"
                     >
                       Вниз
@@ -105,13 +78,13 @@ function App() {
                   {index < tasks.length - 1 ? (
                     <>
                       <button
-                        onClick={() => moveTask(index, index + 1)}
+                        onClick={() => moveTask(index, index + 1, tasks, setTasks)}
                         className="glow-on-hover"
                       >
                         Вниз
                       </button>{" "}
                       <button
-                        onClick={() => moveTask(index, index - 1)}
+                        onClick={() => moveTask(index, index - 1, tasks, setTasks)}
                         className="glow-on-hover"
                       >
                         Вверх
@@ -121,7 +94,7 @@ function App() {
                     <>
                       {" "}
                       <button
-                        onClick={() => moveTask(index, index - 1)}
+                        onClick={() => moveTask(index, index - 1, tasks, setTasks)}
                         className="glow-on-hover"
                       >
                         Вверх
@@ -136,7 +109,11 @@ function App() {
       </table>
 
       {tasks.some((task) => task.completed) && (
-        <button onClick={deleteCompleted} className="glow-on-hover" style={{marginTop:"30px"}}>
+        <button
+          onClick={() => deleteCompleted(tasks, setTasks)}
+          className="glow-on-hover"
+          style={{ marginTop: "30px" }}
+        >
           Удалить выполненные
         </button>
       )}
